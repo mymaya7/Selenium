@@ -8,30 +8,37 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
-
-
 s=Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=s)
 driver.get("https://10fastfingers.com/typing-test/english")
+
+# Finding the element of the textbox bu ID.
 search = driver.find_element(By.ID,"inputfield")
 startTime = time.time()
 
-i=1
-while i>0:
-	text="//*[@id='row1']/span[{}]".format(i)
+# Index of the current word in the sentence.
+wordNum=1
+
+# Loop until the sentence is over.
+while True:
+
+	# Find the current word element.
+	text="//*[@id='row1']/span[{}]".format(wordNum)
 	try:
+		#Get the word element by ID.
 	    words = WebDriverWait(driver, 10).until(
 	        EC.presence_of_element_located((By.XPATH, text))
 	    )
 
+	    # The sentence ended.
 	    if words.text== '':
 	    	endTime = time.time()
-	    	print("done number of words {} , in : {} seconds".format(i-1,endTime - startTime))
+	    	print("DONE - number of words {} , in : {} seconds".format(wordNum-1,endTime - startTime))
 	    	break
 	  
 	    search.send_keys(words.text)
 	    search.send_keys(Keys.SPACE)
-	    i=i+1
+	    wordNum=wordNum+1
 	except:
 	    driver.quit()
 time.sleep(20)	
