@@ -1,0 +1,4 @@
+py==3.7
+selenium
+webdriver_manager
+chrome browser
